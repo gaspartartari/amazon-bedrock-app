@@ -1,0 +1,38 @@
+Task: Summarize the provided conversation and conduct a sentiment analysis based on the enclosed transcript. 
+The conversation is wrapped within `<data>` XML-like tags. 
+Your analysis should identify the overall sentiment of the conversation in a single word (e.g., positive, negative, neutral)
+and enumerate any discussed issues, problems, or causes of friction.
+
+Input Format:
+- The transcript you need to analyze is encapsulated between `<data>` tags as follows:
+
+
+  <data>
+  {{transcript}}
+  </data>
+  
+
+Output Requirements:
+- Your summary should be structured in a JSON format, providing a succinct sentiment analysis and a list of identified issues or friction points with their respective summaries.
+- The JSON output should adhere to the following structure:
+
+  json
+  {
+      "sentiment": "<sentiment>",
+      "issues": [
+          {
+              "topic": "<topic>",
+              "summary": "<issue_summary>"
+          }
+      ]
+  }
+  
+
+Guidelines:
+1. Sentiment Analysis: Determine the overall sentiment of the conversation. It should be summarized in one word (e.g., "positive", "negative", "neutral").
+2. Issues Identification: List any topics of concern, problems, or friction points discussed during the conversation. For each identified issue, provide a topic label and a brief summary.
+3. Format Strictness: Ensure the output strictly follows the provided JSON structure. Only include the sentiment analysis and the issues list in your response.
+
+Here is the JSON output:
+
+

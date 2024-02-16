@@ -1,8 +1,10 @@
+'''
 import boto3
 import json
 bedrock_runtime = boto3.client('bedrock-runtime', region_name='us-west-2')
 
-'''
+
+
 prompt = "Write a one sentence summary of Brazil."
 kwargs = {
     "modelId": "amazon.titan-text-lite-v1",
@@ -23,9 +25,7 @@ response_body = json.loads(response.get('body').read())
 print(json.dumps(response_body, indent=4))
 
 print(response_body['results'][0]['outputText'])
-'''
 
-'''
 prompt = "Write a random motivational speak"
 
 kwargs = {
@@ -51,8 +51,6 @@ generation = response_body['results'][0]['outputText']
 print(generation)
 
 print(json.dumps(response_body, indent=4))
-
-'''
 
 
 with open('transcript.txt', "r") as file:
@@ -82,7 +80,7 @@ kwargs = {
         {
             "inputText": prompt,
             "textGenerationConfig": {
-                "maxTokenCount": 512,
+                "maxTokenCount": 50,
                 "temperature": 0,
                 "topP": 0.9
             }
@@ -95,4 +93,4 @@ response_body = json.loads(response.get('body').read())
 
 generation = response_body['results'][0]['outputText']
 print(generation)
-
+'''
