@@ -1,6 +1,7 @@
 import boto3
 import json
 from jinja2 import Template
+import uuid
 
 s3_client = boto3.client('s3')
 bedrock_runtime = boto3.client('bedrock-runtime', 'us-west-2')
@@ -11,7 +12,7 @@ def lambda_handler(event, context):
     key = event['Records'][0]['s3']['object']['key']
     
     # One of a few different checks to ensure we don't end up in a recursive loop.
-    if "-transcript.json" not in key: 
+    if "transcription-job" not in key: 
         print("This demo only works with *-transcript.json.")
         return
     
@@ -30,9 +31,12 @@ def lambda_handler(event, context):
         
         summary = bedrock_summarisation(transcript)
         
+        result_key = key.replace(".json", "result.txt")
+    
+        
         s3_client.put_object(
             Bucket = bucket,
-            Key = 'result.txt',
+            Key = result_key,
             Body = summary,
             ContentType = 'text/plain'
         )

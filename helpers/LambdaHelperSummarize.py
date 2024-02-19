@@ -4,9 +4,7 @@ import json
 import os
 
 
-
-
-class Lambda_Helper: 
+class Lambda_Helper_summarize: 
 
     def __init__(self):
         
@@ -26,19 +24,22 @@ class Lambda_Helper:
         
         self.s3_client = boto3.client('s3', region_name='us-west-2')
             
-    def deploy_function(self, code_file_names, function_name=""):
+    def deploy_function(self, code_file_names, function_name="", handler="lambda_function.lambda_handler"):
 
         if function_name:
             self.function_name = function_name
         else:
             print(f"Using function name: {self.function_name}")
         
-        print('Zipping function...')
-        zip_file_path = 'lambda_function.zip'
+        print(f"Zipping function for {function_name}...")
+        zip_file_name = f"{self.function_name}_lambda_function.zip"
+        zip_file_path = os.path.join(os.getcwd(), zip_file_name)
 
         with zipfile.ZipFile(zip_file_path, 'w') as zipf:
             for code_file_name in code_file_names:
-                zipf.write(code_file_name, arcname=code_file_name)
+                # Place all files at the root of the ZIP file
+                arcname = os.path.basename(code_file_name)
+                zipf.write(code_file_name, arcname=arcname)
 
         try:
             print('Looking for existing function...')
@@ -62,7 +63,7 @@ class Lambda_Helper:
                 FunctionName=self.function_name,
                 Runtime='python3.11',
                 Role=self.role_arn,
-                Handler='lambda_function.lambda_handler',
+                Handler=handler,
                 Description=self.function_description,
                 Timeout=120,
                 Code={
