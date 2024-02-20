@@ -1,4 +1,4 @@
-'''
+
 import boto3
 import json
 bedrock_runtime = boto3.client('bedrock-runtime', region_name='us-west-2')
@@ -93,4 +93,4 @@ response_body = json.loads(response.get('body').read())
 
 generation = response_body['results'][0]['outputText']
 print(generation)
-'''
+
